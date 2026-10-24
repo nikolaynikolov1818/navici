@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Навици</title>
+<meta name="theme-color" content="#2F5BFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Навици">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F5; --surface:#FFFFFF; --ink:#0F1B2D; --muted:#5B6678; --line:#D5DBE5;
+  --accent:#2F5BFF; --accent-ink:#FFFFFF; --done:#FFC93C; --done-ink:#2A1F00; --soft:#E2E7F0; --danger:#C8322F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121826; --surface:#1B2334; --ink:#EEF2F8; --muted:#97A3B6; --line:#2C3649;
+    --accent:#6F8CFF; --accent-ink:#0B1020; --done:#FFC93C; --done-ink:#2A1F00; --soft:#242E42; --danger:#FF6B66;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121826; --surface:#1B2334; --ink:#EEF2F8; --muted:#97A3B6; --line:#2C3649;
+  --accent:#6F8CFF; --accent-ink:#0B1020; --done:#FFC93C; --done-ink:#2A1F00; --soft:#242E42; --danger:#FF6B66;
+  color-scheme:dark;
+}
+/* стилове, които се отключват с нивата */
+body[data-skin="ocean"]{--accent:#0891B2;--accent-ink:#FFFFFF;--done:#5EEAD4;--done-ink:#042F2E}
+body[data-skin="jungle"]{--accent:#16A34A;--accent-ink:#FFFFFF;--done:#BEF264;--done-ink:#1A2E05}
+body[data-skin="night"]{--accent:#7C3AED;--accent-ink:#FFFFFF;--done:#F0ABFC;--done-ink:#3B0764}
+body[data-skin="fire"]{--accent:#EA580C;--accent-ink:#FFFFFF;--done:#FDE047;--done-ink:#3A2A00}
+body[data-skin="machine"]{--bg:#0E1013;--surface:#171A1F;--ink:#E6EDF3;--muted:#8B949E;--line:#2A3038;--soft:#20252C;--accent:#22D3EE;--accent-ink:#04151A;--done:#A3E635;--done-ink:#142000;--danger:#FF6B66;color-scheme:dark}
+body[data-skin="legend"]{--bg:#0D0B07;--surface:#1A160D;--ink:#F5EBD3;--muted:#B5A57E;--line:#3A311C;--soft:#2A2314;--accent:#D4A017;--accent-ink:#1A1200;--done:#F5D06F;--done-ink:#2A1F00;--danger:#FF7A6B;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,h3,.big{font-family:Unbounded,Manrope,system-ui,sans-serif}
+header.top{padding:8px 0 12px}
+h1{font-size:clamp(1.5rem,6vw,2.3rem);line-height:1.05;margin:0;font-weight:800;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:6px 0 0;font-size:.95rem}
+.motd{color:var(--muted);font-style:italic;margin:4px 0 12px;font-size:.95rem}
+.lvl{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin:12px 0 4px}
+.lvl .hero{font-size:2.8rem;line-height:1;flex:0 0 auto}
+.lvl .info{flex:1;min-width:0}
+.lvl .ln{font-family:Unbounded,sans-serif;font-weight:700;font-size:1.05rem}
+.lvl .xp{color:var(--muted);font-size:.85rem}
+.lvl .bar{margin:6px 0 0}
+.jk{font-weight:800;white-space:nowrap;background:var(--soft);padding:6px 10px;border-radius:999px;font-size:.9rem}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;padding:8px 0 12px;overflow-x:auto}
+nav.tabs button{flex:1 0 auto;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .95rem Manrope,sans-serif;padding:10px 14px;border-radius:12px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section[hidden]{display:none}
+.panel,.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px}
+.card{padding:14px}
+.card h3{margin:0 0 4px;font-size:.95rem}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+@media (max-width:560px){.mini{grid-template-columns:1fr}}
+.card select{width:100%;margin-top:6px}
+.danger{background:var(--danger);color:#fff;border-radius:16px;padding:12px 16px;font-weight:800;margin-bottom:12px}
+.idea{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--soft);border-radius:16px;padding:12px 16px;margin-bottom:12px;font-weight:700}
+.daynav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px}
+.daynav button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.2rem;cursor:pointer}
+.daynav button:disabled{opacity:.35;cursor:default}
+.daynav .lbl{text-align:center}
+.daynav .lbl strong{display:block;font-family:Unbounded,sans-serif;font-size:1.05rem}
+.daynav .lbl span{color:var(--muted);font-size:.9rem}
+.bar{height:10px;background:var(--soft);border-radius:999px;overflow:hidden;margin:4px 0 16px}
+.bar>i{display:block;height:100%;background:var(--done);border-radius:999px;transition:width .3s ease}
+.bar.blue>i{background:var(--accent)}
+.part{font-family:Unbounded,sans-serif;font-size:.85rem;font-weight:700;color:var(--muted);margin:14px 0 8px}
+.part:first-child{margin-top:0}
+ol.check{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.check li{display:flex;gap:8px}
+ol.check .hb{flex:1;min-width:0;display:flex;align-items:center;gap:14px;text-align:left;padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 1rem Manrope,sans-serif;cursor:pointer}
+ol.check .n{flex:0 0 30px;height:30px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);font-size:.85rem;color:var(--muted)}
+ol.check .hb[aria-pressed="true"]{background:var(--done);color:var(--done-ink);border-color:var(--done)}
+ol.check .hb[aria-pressed="true"] .n{background:var(--done-ink);border-color:var(--done-ink);color:var(--done)}
+ol.check .hb[aria-pressed="true"] .t{text-decoration:line-through;text-decoration-thickness:2px}
+ol.check .rs{margin-left:auto;font-size:.8rem;font-weight:600;color:var(--muted);white-space:nowrap}
+ol.check .tb{flex:0 0 52px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-weight:800;cursor:pointer;font-size:.8rem}
+.rest{color:var(--muted);font-size:.85rem;margin-top:10px}
+.perfect{margin-top:14px;padding:12px 14px;border-radius:14px;background:var(--ink);color:var(--bg);font-weight:700;text-align:center}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;justify-content:center}
+.act.left{justify-content:flex-start}
+.feel{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.feel h3{font-size:.95rem;margin:0 0 8px}
+.mood{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.mood button{font-size:1.4rem;min-width:48px;height:48px;padding:0 10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;font-family:Manrope,sans-serif}
+.mood.en button{font-size:.95rem;font-weight:700}
+.mood button[aria-pressed="true"]{background:var(--soft);box-shadow:inset 0 0 0 2px var(--accent);border-color:var(--accent)}
+.mood button:disabled{opacity:.4;cursor:default}
+textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;width:100%;min-height:70px;resize:vertical}
+.gridwrap{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+table.grid{border-collapse:separate;border-spacing:0;font-size:.85rem}
+table.grid th,table.grid td{padding:0;border-bottom:1px solid var(--line)}
+table.grid thead th{padding:8px 0;color:var(--muted);font-weight:600;min-width:34px;text-align:center}
+table.grid thead th.today{color:var(--accent)}
+table.grid .name{position:sticky;left:0;background:var(--surface);text-align:left;padding:8px 12px;min-width:150px;max-width:190px;font-weight:600;z-index:1;border-right:1px solid var(--line)}
+table.grid td button{width:30px;height:30px;margin:3px 2px;border-radius:8px;border:1px solid var(--line);background:var(--bg);cursor:pointer;color:var(--done-ink);font-weight:800}
+table.grid td button.on{background:var(--done);border-color:var(--done)}
+table.grid td button:disabled{opacity:.3;cursor:default}
+table.grid td button.off{border-style:dashed;opacity:.25}
+table.grid tfoot td{padding:6px 0;text-align:center;color:var(--muted);font-size:.75rem;font-weight:700}
+.hero2{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.big{font-size:clamp(4rem,20vw,7rem);font-weight:800;line-height:.9;letter-spacing:-.04em}
+.big small{font-size:.4em;letter-spacing:0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:18px}
+.fact{background:var(--bg);border-radius:14px;padding:12px}
+.fact b{display:block;font-family:Unbounded,sans-serif;font-size:1.4rem}
+.fact span{color:var(--muted);font-size:.85rem}
+.hab{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin-top:14px}
+.hab .bar{grid-column:1/-1;margin:0}
+.hab .p{font-weight:700}
+h2{font-size:1.1rem;margin:24px 0 4px}
+.note{color:var(--muted);font-size:.9rem;margin:6px 0 0}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:130px;margin-top:12px}
+.wk div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:.75rem;color:var(--muted);gap:4px}
+.wk i{width:100%;max-width:34px;background:var(--accent);border-radius:8px 8px 4px 4px;min-height:3px}
+.wk .best i{background:var(--done)}
+.wk .worst i{background:var(--danger)}
+.arch{display:grid;gap:8px;margin-top:10px}
+.arch div{background:var(--bg);border-radius:14px;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.arch b{font-family:Unbounded,sans-serif}
+.chat{display:grid;gap:8px;max-height:55vh;overflow-y:auto;padding:4px 2px;margin-top:12px}
+.msg{padding:10px 14px;border-radius:16px;max-width:88%;white-space:pre-wrap;line-height:1.5}
+.msg.u{justify-self:end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:4px}
+.msg.a{justify-self:start;background:var(--bg);border-bottom-left-radius:4px}
+.chatin{display:flex;gap:8px;margin-top:12px}
+.chatin input{flex:1;min-width:0}
+.rec{background:var(--bg);border-radius:16px;padding:14px;margin-top:12px}
+.rec .rh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.rec .rh b{font-family:Unbounded,sans-serif}
+.rec .best{font-weight:800}
+.rec svg{width:100%;height:auto;display:block;margin:10px 0}
+.rec .row input{background:var(--surface)}
+.entries{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.entries span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 6px 4px 10px;font-size:.8rem;display:flex;align-items:center;gap:4px}
+.entries button{border:0;background:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:2px 4px}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.row input[type=text]{flex:1;min-width:120px}
+.row input[type=number]{width:64px;flex:0 0 64px;padding:10px 6px;text-align:center}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.hrow{border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px}
+.hrow .row{flex-wrap:nowrap}
+.hrow .row:last-child{margin-bottom:0;flex-wrap:wrap}
+.daychips{display:flex;gap:4px;flex-wrap:wrap}
+.daychips button{min-width:36px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font:700 .75rem Manrope,sans-serif;cursor:pointer}
+.daychips button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.ib{width:40px;height:42px;flex:0 0 40px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.ib.del{color:var(--danger)}
+.ib:disabled{opacity:.35}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);font:700 1rem Manrope,sans-serif;padding:12px 16px;border-radius:12px;cursor:pointer}
+.btn.gold{background:var(--done);color:var(--done-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.red{background:transparent;color:var(--danger);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:.9rem}
+.btn:disabled{opacity:.5;cursor:default}
+.field{display:grid;gap:6px;margin:12px 0}
+.field label{font-weight:600}
+.check-line{display:flex;gap:10px;align-items:center;font-weight:600;margin:10px 0}
+.check-line input{width:22px;height:22px}
+.status{color:var(--muted);font-size:.8rem;text-align:center;margin-top:24px}
+.goal{background:var(--ink);color:var(--bg);border-radius:18px;padding:16px 18px;margin-bottom:12px}
+.goal .gl{font-size:.85rem;opacity:.75}
+.goal .gt{font-family:Unbounded,Manrope,sans-serif;font-weight:700;font-size:1.1rem;margin:2px 0 12px;line-height:1.3}
+.goal .gbar{position:relative;height:12px;background:rgba(127,127,127,.35);border-radius:999px}
+.goal .gbar i{display:block;height:100%;background:var(--done);border-radius:999px;transition:width .3s ease}
+.goal .gbar b{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--bg);border-radius:2px}
+.goal .gm{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;margin-top:8px;opacity:.9}
+.awards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.award{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.award .ic{font-size:2rem;line-height:1}
+.award.locked .ic{filter:grayscale(1);opacity:.35}
+.award.got{background:var(--done);color:var(--done-ink);border-color:var(--done)}
+.award .an{font-weight:700;margin:6px 0 2px}
+.award .ad{font-size:.8rem;opacity:.8}
+.award .ap{font-size:.75rem;font-weight:700;margin-top:6px;color:var(--muted)}
+.award.got .ap{color:var(--done-ink)}
+.skins{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:10px}
+.skin{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:14px;padding:12px;cursor:pointer;text-align:left;font:600 .9rem Manrope,sans-serif}
+.skin[aria-pressed="true"]{box-shadow:inset 0 0 0 3px var(--accent)}
+.skin:disabled{opacity:.45;cursor:default}
+.skin .sw{display:flex;gap:4px;margin-bottom:8px}
+.skin .sw i{width:22px;height:22px;border-radius:50%;display:block;border:1px solid rgba(127,127,127,.4)}
+.skin small{display:block;color:var(--muted);font-size:.75rem}
+.ladder{display:grid;gap:6px;margin-top:10px}
+.ladder div{display:flex;gap:12px;align-items:center;padding:8px 12px;border-radius:12px;background:var(--bg)}
+.ladder .cur{box-shadow:inset 0 0 0 2px var(--accent)}
+.ladder .lock{opacity:.45}
+.ladder span:first-child{font-size:1.5rem}
+.ladder b{flex:1}
+.ladder small{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translate(-50%,200%);background:var(--done);color:var(--done-ink);padding:12px 18px;border-radius:14px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.25);transition:transform .35s ease;z-index:40;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+.ov{position:fixed;inset:0;background:rgba(8,12,22,.62);display:grid;place-items:center;z-index:30;padding:16px}
+.ov[hidden]{display:none}
+.box{background:var(--surface);color:var(--ink);border-radius:22px;padding:22px;width:min(460px,100%);max-height:88vh;overflow:auto}
+.box h2{margin:0 0 6px}
+.center{text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 14px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:8px 12px;font:600 .9rem Manrope,sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.sugg label{display:flex;gap:10px;align-items:flex-start;padding:10px;border-radius:12px;background:var(--bg);margin-bottom:6px;font-weight:600}
+.sugg input{width:20px;height:20px;margin-top:2px;flex:0 0 auto}
+.sugg small{display:block;color:var(--muted);font-weight:400}
+.bigemoji{font-size:5rem;line-height:1.1;text-align:center}
+.timerbig{font-family:Unbounded,sans-serif;font-size:clamp(3.5rem,18vw,5rem);text-align:center;font-weight:800;margin:10px 0}
+.shareimg{width:100%;border-radius:14px;display:block;margin:10px 0}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-12deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(8deg)}}
+.pop{animation:pop .55s ease both}
+.shake{animation:shake .6s ease 2}
+@media (prefers-reduced-motion:reduce){.bar>i,.goal .gbar i,.toast{transition:none}.pop,.shake{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Дисциплината носи щастие</h1>
+    <p class="sub" id="periodLine"></p>
+    <div class="lvl" id="lvlCard"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="today" aria-selected="true">Днес</button>
+    <button role="tab" data-tab="grid" aria-selected="false">Таблица</button>
+    <button role="tab" data-tab="stats" aria-selected="false">Резултати</button>
+    <button role="tab" data-tab="records" aria-selected="false">Рекорди</button>
+    <button role="tab" data-tab="awards" aria-selected="false">Награди</button>
+    <button role="tab" data-tab="settings" aria-selected="false">Настройки</button>
+  </nav>
+
+  <section id="tab-today">
+    <div id="danger"></div>
+    <p class="motd" id="motd"></p>
+    <div id="ideaPrompt"></div>
+    <div class="goal" id="goalCard"></div>
+    <div class="mini">
+      <div class="card" id="missionCard"></div>
+      <div class="card" id="focusCard"></div>
+    </div>
+    <div class="panel">
+      <div class="daynav">
+        <button id="prevDay" aria-label="Предишен ден">‹</button>
+        <div class="lbl"><strong id="dayTitle"></strong><span id="dayDate"></span></div>
+        <button id="nextDay" aria-label="Следващ ден">›</button>
+      </div>
+      <div class="bar"><i id="dayBar" style="width:0"></i></div>
+      <div id="checklist"></div>
+      <div id="perfect"></div>
+      <div class="act" id="dayActions"></div>
+      <div class="feel">
+        <h3>Как се чувстваш?</h3>
+        <div class="mood" id="moodRow"></div>
+        <h3>Енергия</h3>
+        <div class="mood en" id="energyRow"></div>
+        <h3>📝 Бележка за деня</h3>
+        <textarea id="noteIn" maxlength="400" placeholder="Какво се случи днес? Кратко, за да помниш историята на деня."></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-grid" hidden>
+    <div class="gridwrap"><table class="grid" id="grid"></table></div>
+    <p class="note">Натисни квадратче, за да отметнеш. Бъдещите дни са заключени. Пунктирано = почивен ден за този навик. 🃏 = ден, спасен с жокер.</p>
+  </section>
+
+  <section id="tab-stats" hidden>
+    <div class="panel">
+      <div class="hero2">
+        <div class="big" id="bigPct">0<small>%</small></div>
+        <div><strong id="statHead"></strong><p class="note" id="statNote"></p></div>
+      </div>
+      <div class="facts" id="facts"></div>
+      <div class="act left"><button class="btn gold" id="shareBtn">📸 Карта за споделяне</button><button class="btn" id="ideaBtn">💡 Идея за видео</button></div>
+      <h2>По навици</h2>
+      <div id="habStats"></div>
+      <h2>Дни от седмицата</h2>
+      <p class="note" id="wkNote"></p>
+      <div class="wk" id="wkChart"></div>
+      <h2>Защо пропускам</h2>
+      <div id="reasonStats"></div>
+      <h2>Настроение и навици</h2>
+      <div id="moodStats"></div>
+      <h2>📚 Архив на челинджите</h2>
+      <div id="archive"></div>
+    </div>
+  </section>
+
+  <section id="tab-records" hidden>
+    <div class="panel">
+      <h2 style="margin-top:0">🏅 Лични рекорди</h2>
+      <p class="note">Записвай резултатите си и гледай как растат. Всеки нов рекорд носи +25 XP.</p>
+      <div id="recList"></div>
+      <h2>Нов рекорд за следене</h2>
+      <div class="chips" id="recPresets"></div>
+      <div class="row">
+        <input type="text" id="recName" placeholder="Име, напр. „Лицеви за 1 мин“" maxlength="40">
+        <select id="recType" aria-label="Вид"><option value="count">Брой / число</option><option value="time">Време (мм:сс)</option></select>
+        <select id="recBetter" aria-label="Кое е по-добре"><option value="more">Повече е по-добре</option><option value="less">По-малко е по-добре</option></select>
+        <button class="btn" id="recAdd">Добави</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-awards" hidden>
+    <div class="panel">
+      <h2 style="margin-top:0">Нива</h2>
+      <div class="ladder" id="ladder"></div>
+      <h2>🎨 Стилове</h2>
+      <p class="note">Всяко ново ниво отключва нов стил на тракера.</p>
+      <div class="skins" id="skins"></div>
+      <h2 id="awardsHead"></h2>
+      <p class="note">Наградите остават твои завинаги, дори да започнеш нов период.</p>
+      <div class="awards" id="awardsGrid"></div>
+      <h2 id="secretHead">Тайни значки</h2>
+      <p class="note">Падат само от сандъци след перфектен ден.</p>
+      <div class="awards" id="secretGrid"></div>
+    </div>
+  </section>
+
+  <section id="tab-settings" hidden>
+    <div class="panel">
+      <h2 style="margin-top:0">Период</h2>
+      <div class="field"><label for="startIn">Начална дата</label><input type="date" id="startIn"></div>
+      <div class="field"><label for="daysIn">Продължителност</label>
+        <select id="daysIn">
+          <option value="7">7 дни</option><option value="14">14 дни</option><option value="21">21 дни</option>
+          <option value="30">30 дни</option><option value="60">60 дни</option><option value="90">90 дни</option>
+        </select>
+      </div>
+      <h2>Цел за периода</h2>
+      <div class="field"><label for="goalIn">Каква е целта ти?</label><input type="text" id="goalIn" maxlength="90" placeholder="напр. „Влизам във форма за HYROX“"></div>
+      <div class="field"><label for="targetIn">Колко % искаш да изпълниш</label>
+        <select id="targetIn">
+          <option value="50">50%</option><option value="60">60%</option><option value="70">70%</option>
+          <option value="80">80%</option><option value="90">90%</option><option value="100">100%</option>
+        </select>
+      </div>
+      <h2>Навици</h2>
+      <p class="note" style="margin-bottom:10px">За всеки навик избираш част от деня и в кои дни важи. „мин“ е по желание: сложи минути и ще има таймер.</p>
+      <div id="habEdit"></div>
+      <div class="row" style="margin-top:12px">
+        <input type="text" id="newHab" placeholder="Нов навик, напр. „Чета 15 мин“" maxlength="60">
+        <button class="btn" id="addHab">Добави</button>
+      </div>
+      <h2>Ефекти</h2>
+      <label class="check-line"><input type="checkbox" id="soundIn"> Звуци</label>
+      <label class="check-line"><input type="checkbox" id="fxIn"> Конфети</label>
+      <label class="check-line"><input type="checkbox" id="dangerIn"> Предупреждение вечер, ако денят не е завършен</label>
+      <h2>💾 Резервно копие</h2>
+      <p class="note">Всичко се пази на този телефон. Изтегляй си копие от време на време, за да не загубиш нищо, ако смениш телефона или изчистиш браузъра.</p>
+      <div class="act left">
+        <button class="btn" id="backupBtn">Изтегли копие</button>
+        <label class="btn ghost" for="restoreIn" style="display:inline-block">Зареди копие</label>
+        <input type="file" id="restoreIn" accept=".json,application/json" hidden>
+      </div>
+      <h2>Нов старт</h2>
+      <p class="note">Текущият челиндж отива в архива и започва нов от днес. XP, нивото, жокерите, рекордите и наградите остават.</p>
+      <button class="btn red" id="resetBtn" style="margin-top:10px">Започни нов челиндж</button>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <p class="status" id="status">Записва се на този телефон</p>
+</div>
+<div class="ov" id="ov" hidden><div class="box" id="box" role="dialog" aria-modal="true"></div></div>
+
+<script>
+(function(){
+  const LS_KEY = "habit-tracker-v1";
+  const pad = n => String(n).padStart(2,"0");
+  const iso = d => d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const parse = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y,m-1,d); };
+  const addDays = (s,n) => { const d = parse(s); d.setDate(d.getDate()+n); return iso(d); };
+  const today = () => iso(new Date());
+  const WD = ["нд","пн","вт","ср","чт","пт","сб"];
+  const WDL = ["неделя","понеделник","вторник","сряда","четвъртък","петък","събота"];
+  const MONTHS = ["януари","февруари","март","април","май","юни","юли","август","септември","октомври","ноември","декември"];
+  const nice = s => { const d = parse(s); return WD[d.getDay()]+", "+d.getDate()+" "+MONTHS[d.getMonth()]; };
+  const short = s => { const d = parse(s); return d.getDate()+"."+pad(d.getMonth()+1); };
+  const uid = () => Math.random().toString(36).slice(2,9);
+  const weekOf = s => { const d = parse(s); const k = (d.getDay()+6)%7; d.setDate(d.getDate()-k); return iso(d); };
+  const reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+  const ALL_DAYS = [0,1,2,3,4,5,6];
+  const DAY_ORDER = [1,2,3,4,5,6,0];
+
+  const LEVELS = [
+    {n:"Новак", xp:0, h:"🥚"}, {n:"Начинаещ", xp:300, h:"🐣"}, {n:"Упорит", xp:800, h:"🦎"},
+    {n:"Атлет", xp:1600, h:"🐺"}, {n:"Звяр", xp:2800, h:"🦁"}, {n:"Машина", xp:4500, h:"🐲"}, {n:"Легенда", xp:7000, h:"🐉"}
+  ];
+  const SKINS = [
+    {id:"classic", n:"Класика", lv:0, sw:["#2F5BFF","#FFC93C"]},
+    {id:"ocean", n:"Океан", lv:1, sw:["#0891B2","#5EEAD4"]},
+    {id:"jungle", n:"Джунгла", lv:2, sw:["#16A34A","#BEF264"]},
+    {id:"night", n:"Нощ", lv:3, sw:["#7C3AED","#F0ABFC"]},
+    {id:"fire", n:"Огън", lv:4, sw:["#EA580C","#FDE047"]},
+    {id:"machine", n:"Машина", lv:5, sw:["#171A1F","#22D3EE","#A3E635"]},
+    {id:"legend", n:"Легенда", lv:6, sw:["#0D0B07","#D4A017","#F5D06F"]}
+  ];
+  const PARTS = [{id:"morning", t:"🌅 Сутрин"}, {id:"day", t:"☀️ През деня"}, {id:"evening", t:"🌙 Вечер"}];
+  const REASONS = [
+    {id:"time", t:"⏰ Нямах време"}, {id:"forgot", t:"🤷 Забравих"},
+    {id:"lazy", t:"😴 Мързеше ме"}, {id:"sick", t:"🤒 Болен / почивка"}
+  ];
+  const MOODS = ["😞","😕","😐","🙂","😄"];
+  const ENERGY = ["🪫 Ниска","🔋 Средна","⚡ Висока"];
+  const SECRETS = [
+    {id:"unicorn", ic:"🦄", n:"Еднорог"}, {id:"diamond", ic:"💎", n:"Диамант"},
+    {id:"clover", ic:"🍀", n:"Късметлия"}, {id:"volcano", ic:"🌋", n:"Вулкан"}
+  ];
+  const MOTD = [
+    "Мотивацията те стартира. Дисциплината те докарва до финала.",
+    "Никой не помни лесните дни. Днес направи труден.",
+    "Не трябва да ти се иска. Трябва само да започнеш.",
+    "Малките отметки всеки ден правят голямата промяна.",
+    "Ти срещу вчерашния ти. Само това е състезанието.",
+    "Пропуснатият ден не е провал. Пропуснатите два са навик.",
+    "Ако беше лесно, всички щяха да го правят.",
+    "Тялото постига това, в което главата повярва.",
+    "Дисциплината е да помниш какво искаш.",
+    "Една тренировка повече, едно извинение по-малко.",
+    "Бъди човекът, на когото на 13 си мечтал да приличаш.",
+    "Прогресът е тих. Резултатът вдига шум.",
+    "Не броиш дните. Правиш дните да броят.",
+    "Уморен ли си? Добре. Значи растеш.",
+    "Победата идва от това, което правиш, когато никой не гледа.",
+    "Днес е ден, в който ставаш малко по-добър. Само малко стига.",
+    "Не чакай понеделник. Започни сега.",
+    "Серията е крехка. Пази я.",
+    "Повтаряй. Повтаряй. Повтаряй. Така се правят машини.",
+    "Щастието е навик, който се тренира."
+  ];
+  const REC_PRESETS = [
+    {n:"Лицеви за 1 мин", type:"count", better:"more"},
+    {n:"Набирания (макс)", type:"count", better:"more"},
+    {n:"5 км бягане", type:"time", better:"less"},
+    {n:"Планк", type:"time", better:"more"},
+    {n:"Wall Balls за 2 мин", type:"count", better:"more"}
+  ];
+
+  const DEFAULT_HABITS = [
+    ["Ставам до 7:00",0,"morning"],["Измивам си зъбите",0,"morning"],["Чаша вода след ставане",0,"morning"],["Закуска с протеин",0,"morning"],
+    ["Тренировка",0,"day",[1,2,3,4,5,6]],["2 литра вода през деня",0,"day"],["Без енергийни напитки",0,"day"],
+    ["10 мин разтягане",10,"day"],["Учене / домашни",0,"day",[1,2,3,4,5]],
+    ["Без телефон 30 мин преди сън",0,"evening"],["Измивам си зъбите вечер",0,"evening"],["Лягам до 22:30",0,"evening"]
+  ];
+  function guessPart(n){
+    if (/вечер|лягам|сън/i.test(n)) return "evening";
+    if (/ставам|ставане|закуска|сутрин|зъбите$/i.test(n)) return "morning";
+    return "day";
+  }
+  function fresh(){
+    return { v:3, start: today(), days: 30, habits: DEFAULT_HABITS.map(([n,m,p,d])=>({id:uid(), name:n, min:m, part:p, days:d || ALL_DAYS.slice()})), checks:{} };
+  }
+  function norm(x){
+    const obj = k => { if (!x[k] || typeof x[k] !== "object" || Array.isArray(x[k])) x[k] = {}; };
+    const arr = k => { if (!Array.isArray(x[k])) x[k] = []; };
+    if (!x.goal || typeof x.goal !== "object") x.goal = {text:"", target:80};
+    if (typeof x.goal.target !== "number") x.goal.target = 80;
+    if (typeof x.goal.text !== "string") x.goal.text = "";
+    ["awards","checks","chests","jokerUsed","missionsDone","focus","reasons","mood","asked","secrets","notes","ideaWeek"].forEach(obj);
+    ["records","archive","chat"].forEach(arr);
+    if (typeof x.xpBank !== "number") x.xpBank = 0;
+    if (typeof x.jokerCarry !== "number") x.jokerCarry = 0;
+    if (typeof x.sound !== "boolean") x.sound = true;
+    if (typeof x.fx !== "boolean") x.fx = true;
+    if (typeof x.danger !== "boolean") x.danger = true;
+    if (typeof x.skin !== "string") x.skin = "classic";
+    x.habits.forEach(h => {
+      if (typeof h.min !== "number") h.min = /разтягане/i.test(h.name) && /10/.test(h.name) ? 10 : 0;
+      if (!PARTS.some(p => p.id === h.part)) h.part = guessPart(h.name);
+      if (!Array.isArray(h.days) || !h.days.length) h.days = ALL_DAYS.slice();
+    });
+    x.records.forEach(r => { if (!Array.isArray(r.entries)) r.entries = []; });
+    return x;
+  }
+
+  let S = null;
+  try { const raw = localStorage.getItem(LS_KEY); if (raw) S = JSON.parse(raw); } catch(e){}
+  if (!S || !Array.isArray(S.habits)) S = fresh();
+  norm(S);
+
+  function save(){
+    if (S.chat.length > 40) S.chat = S.chat.slice(-40);
+    try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+  }
+
+
+  // ---------- изчисления ----------
+  const endDate = () => addDays(S.start, S.days - 1);
+  function dayList(){ const out=[]; for(let i=0;i<S.days;i++) out.push(addDays(S.start,i)); return out; }
+  function elapsedDays(){ const t = today(); return dayList().filter(d => d <= t); }
+  const isActive = (h,d) => h.days.includes(parse(d).getDay());
+  const activeOn = d => S.habits.filter(h => isActive(h,d));
+  const isOn = (d,h) => !!(S.checks[d] && S.checks[d][h]);
+  const doneCount = d => activeOn(d).filter(h => isOn(d,h.id)).length;
+  const isPerfect = d => { const a = activeOn(d); return a.length > 0 && a.every(h => isOn(d,h.id)); };
+  const dayPct = d => { const a = activeOn(d).length; return a ? doneCount(d)/a*100 : 0; };
+  function overallPct(days){
+    let total = 0, done = 0;
+    days.forEach(d => { total += activeOn(d).length; done += doneCount(d); });
+    return total ? Math.round(done/total*100) : 0;
+  }
+  function clampDay(d){
+    const t = today(), e = endDate(); let x = d;
+    if (x < S.start) x = S.start;
+    if (x > e) x = e;
+    if (x > t) x = t < S.start ? S.start : t;
+    return x;
+  }
+  function streaks(){
+    const days = elapsedDays(); let best = 0, run = 0;
+    days.forEach(d => { if (!activeOn(d).length) return; if (isPerfect(d) || S.jokerUsed[d]) { run++; best = Math.max(best, run); } else run = 0; });
+    let cur = 0;
+    for (let i = days.length-1; i >= 0; i--) {
+      const d = days[i];
+      if (!activeOn(d).length) continue;
+      if (isPerfect(d) || S.jokerUsed[d]) cur++;
+      else if (d === today()) continue;
+      else break;
+    }
+    return {best, cur};
+  }
+  function habitStreakBest(h, days){ let r = 0, b = 0; days.forEach(d => { if (!isActive(h,d)) return; if (isOn(d,h.id)) { r++; b = Math.max(b,r); } else r = 0; }); return b; }
+  const perfectCount = () => elapsedDays().filter(isPerfect).length;
+  function jokersAvail(){
+    const fromChests = Object.values(S.chests).filter(c => c && c.t === "joker").length;
+    return S.jokerCarry + Math.floor(perfectCount()/7) + fromChests - Object.keys(S.jokerUsed).length;
+  }
+  function periodXP(){
+    let xp = 0;
+    elapsedDays().forEach(d => {
+      const f = S.focus[weekOf(d)];
+      activeOn(d).forEach(h => { if (isOn(d,h.id)) xp += (f === h.id ? 20 : 10); });
+      if (isPerfect(d)) xp += 30;
+    });
+    Object.values(S.chests).forEach(c => { if (c && c.t === "xp") xp += c.v; });
+    Object.values(S.missionsDone).forEach(v => { if (typeof v === "number") xp += v; });
+    return xp;
+  }
+  const better = (r,a,b) => r.better === "less" ? a < b : a > b;
+  function recBest(r){ let b = null; r.entries.forEach(e => { if (b === null || better(r,e.v,b)) b = e.v; }); return b; }
+  function recordsXP(){ let c = 0; S.records.forEach(r => { let b = null; r.entries.forEach(e => { if (b === null) b = e.v; else if (better(r,e.v,b)) { c++; b = e.v; } }); }); return c*25; }
+  const totalXP = () => S.xpBank + periodXP() + recordsXP();
+  function levelOf(xp){ let i = 0; LEVELS.forEach((l,k) => { if (xp >= l.xp) i = k; }); return i; }
+
+  // ---------- мисии ----------
+  const MISSIONS = [
+    {id:"perfect3", xp:150, t:()=>"3 перфектни дни тази седмица", p:w=>[w.filter(isPerfect).length,3]},
+    {id:"checks", xp:150, t:()=>"Събери "+Math.max(10,S.habits.length*4)+" отметки тази седмица", p:w=>{let c=0;w.forEach(d=>c+=doneCount(d));return [c,Math.max(10,S.habits.length*4)];}},
+    {id:"focus5", xp:150, t:()=>"Фокус навикът 5 дни тази седмица", p:(w,wk)=>{const f=S.focus[wk];return [f?w.filter(d=>isOn(d,f)).length:0,5];}},
+    {id:"high4", xp:200, t:()=>"4 дни над 90%", p:w=>[w.filter(d=>dayPct(d)>=90).length,4]},
+    {id:"run5", xp:150, t:()=>"Някой навик 5 дни подред", p:w=>{let b=0;S.habits.forEach(h=>{b=Math.max(b,habitStreakBest(h,w));});return [b,5];}},
+    {id:"all3", xp:200, t:()=>"Всеки навик поне 3 пъти тази седмица", p:w=>[S.habits.filter(h=>w.filter(d=>isOn(d,h.id)).length>=Math.min(3,h.days.length)).length,Math.max(1,S.habits.length)]}
+  ];
+  function missionFor(wk){ let h = 0; for (const c of wk) h = (h*31 + c.charCodeAt(0)) >>> 0; return MISSIONS[h % MISSIONS.length]; }
+  const weekDays = wk => { const t = today(), s = S.start, e = endDate(); const out=[]; for(let i=0;i<7;i++){const d=addDays(wk,i); if(d>=s&&d<=e&&d<=t) out.push(d);} return out; };
+  function checkMissions(){
+    [...new Set(elapsedDays().map(weekOf))].forEach(wk => {
+      if (S.missionsDone[wk]) return;
+      const m = missionFor(wk); const [c,n] = m.p(weekDays(wk), wk);
+      if (c >= n) { S.missionsDone[wk] = m.xp; save(); toast("🎯 Мисията е изпълнена! +" + m.xp + " XP"); sound("chest"); }
+    });
+  }
+
+  // ---------- ефекти ----------
+  let actx = null;
+  const SND = { tick:[880], perfect:[523,659,784,1047], level:[392,523,659,784,1047,1319], chest:[660,880,1320], timer:[880,660,880,660,1047] };
+  function sound(k){
+    if (!S.sound) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      const now = actx.currentTime, gap = k === "tick" ? 0 : .1;
+      SND[k].forEach((f,i) => {
+        const o = actx.createOscillator(), g = actx.createGain(), t0 = now + i*gap;
+        o.type = "triangle"; o.frequency.value = f;
+        g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(k==="tick"?.08:.2, t0+.02); g.gain.exponentialRampToValueAtTime(.0001, t0+.28);
+        o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0+.3);
+      });
+    } catch(e){}
+  }
+  function confetti(){
+    if (!S.fx || reduced) return;
+    const c = document.createElement("canvas"); c.style.cssText = "position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50";
+    document.body.append(c);
+    const dpr = window.devicePixelRatio || 1, W = c.width = innerWidth*dpr, H = c.height = innerHeight*dpr;
+    let ctx = null; try { ctx = c.getContext("2d"); } catch(e){}
+    if (!ctx) { c.remove(); return; }
+    const cs = getComputedStyle(document.body);
+    const cols = [cs.getPropertyValue("--done").trim() || "#FFC93C", cs.getPropertyValue("--accent").trim() || "#2F5BFF", "#FF6B66","#3BD18A","#ffffff","#6F8CFF"];
+    const P = Array.from({length:140}, () => ({x:W/2+(Math.random()-.5)*W*.3, y:H*.35, vx:(Math.random()-.5)*22*dpr, vy:(-Math.random()*20-6)*dpr, s:(5+Math.random()*7)*dpr, r:Math.random()*6, vr:(Math.random()-.5)*.4, c:cols[Math.floor(Math.random()*cols.length)]}));
+    const t0 = performance.now();
+    (function frame(t){
+      ctx.clearRect(0,0,W,H);
+      P.forEach(p => { p.vy += .6*dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); });
+      if (t - t0 < 2600) requestAnimationFrame(frame); else c.remove();
+    })(t0);
+  }
+  const toastQ = []; let toastBusy = false;
+  function toast(msg){ toastQ.push(msg); if (!toastBusy) nextToast(); }
+  function nextToast(){
+    const m = toastQ.shift(), t = $("toast");
+    if (!m) { toastBusy = false; return; }
+    toastBusy = true; t.textContent = m; t.classList.add("show");
+    setTimeout(() => { t.classList.remove("show"); setTimeout(nextToast, 400); }, 3000);
+  }
+
+  // ---------- модални прозорци ----------
+  const modalQ = [];
+  function openModal(build){ modalQ.push(build); if (modalQ.length === 1) showModal(); }
+  function showModal(){
+    const b = modalQ[0], ov = $("ov"), box = $("box");
+    if (!b) { ov.hidden = true; return; }
+    ov.hidden = false; box.innerHTML = ""; b(box, closeModal);
+  }
+  function closeModal(){ modalQ.shift(); showModal(); }
+
+  // ---------- действия ----------
+  function toggle(d,h){
+    if (d > today()) return;
+    const hab = S.habits.find(x => x.id === h); if (!hab || !isActive(hab,d)) return;
+    const wasPerfect = isPerfect(d);
+    S.checks[d] = S.checks[d] || {};
+    if (S.checks[d][h]) delete S.checks[d][h]; else { S.checks[d][h] = true; sound("tick"); }
+    if (!Object.keys(S.checks[d]).length) delete S.checks[d];
+    if (S.reasons[d] && S.reasons[d][h] && isOn(d,h)) delete S.reasons[d][h];
+    if (!wasPerfect && isPerfect(d)) {
+      if (S.jokerUsed[d]) delete S.jokerUsed[d];
+      confetti(); sound("perfect");
+      toast(S.chests[d] ? "Перфектен ден! 100% 🔥" : "Перфектен ден! Отвори сандъка 🎁");
+    }
+    save(); renderAll(false);
+  }
+  function useJoker(d){
+    if (jokersAvail() < 1 || isPerfect(d) || d >= today()) return;
+    S.jokerUsed[d] = true; save(); renderAll(false); toast("🃏 Жокерът спаси серията ти");
+  }
+  function openChest(d){
+    if (!isPerfect(d) || S.chests[d]) return;
+    const left = SECRETS.filter(s => !S.secrets[s.id]);
+    const r = Math.random(); let res;
+    if (r < .15 && left.length) { const s = left[Math.floor(Math.random()*left.length)]; res = {t:"secret", id:s.id}; S.secrets[s.id] = today(); }
+    else if (r < .40) res = {t:"joker"};
+    else res = {t:"xp", v: 20 + Math.floor(Math.random()*61)};
+    S.chests[d] = res; save();
+    openModal((box, close) => {
+      const e = el("div","bigemoji shake","🎁"); box.append(el("h2","center","Сандък"), e);
+      const msg = el("p","center"); box.append(msg);
+      const ok = el("button","btn","Супер!"); ok.style.width = "100%"; ok.hidden = true; ok.onclick = () => { close(); renderAll(false); };
+      box.append(ok);
+      setTimeout(() => {
+        sound("chest"); confetti();
+        e.className = "bigemoji pop";
+        if (res.t === "xp") { e.textContent = "⭐"; msg.textContent = "+" + res.v + " XP"; }
+        else if (res.t === "joker") { e.textContent = "🃏"; msg.textContent = "Жокер! Пази серията ти в лош ден."; }
+        else { const s = SECRETS.find(x => x.id === res.id); e.textContent = s.ic; msg.textContent = "Тайна значка: " + s.n + "! Рядка находка."; }
+        msg.style.fontWeight = "800"; ok.hidden = false;
+      }, reduced ? 50 : 1250);
+    });
+  }
+
+  // ---------- „Защо пропусна?“ ----------
+  function askMissed(){
+    const d = addDays(today(), -1);
+    if (d < S.start || d > endDate() || S.asked[d] || S.jokerUsed[d]) return;
+    const missed = activeOn(d).filter(h => !isOn(d,h.id));
+    if (!missed.length) return;
+    S.asked[d] = true; save();
+    const pick = {};
+    openModal((box, close) => {
+      box.append(el("h2", null, "Вчера пропусна " + missed.length + (missed.length === 1 ? " навик" : " навика")));
+      box.append(el("p","note","Без съдене. Само избери защо, за да видим кое те спъва."));
+      const quick = el("div","chips");
+      quick.append(el("span","note","За всички: "));
+      REASONS.forEach(r => { const b = el("button","chip",r.t); b.onclick = () => { missed.forEach(h => pick[h.id] = r.id); draw(); }; quick.append(b); });
+      box.append(quick);
+      const list = el("div"); box.append(list);
+      function draw(){
+        list.innerHTML = "";
+        missed.forEach(h => {
+          list.append(el("strong", null, h.name));
+          const ch = el("div","chips");
+          REASONS.forEach(r => { const b = el("button","chip",r.t); b.setAttribute("aria-pressed", pick[h.id] === r.id ? "true" : "false"); b.onclick = () => { pick[h.id] = r.id; draw(); }; ch.append(b); });
+          list.append(ch);
+        });
+      }
+      draw();
+      const act = el("div","act");
+      const skip = el("button","btn ghost","Пропусни"); skip.onclick = () => close();
+      const ok = el("button","btn","Запази"); ok.onclick = () => { if (Object.keys(pick).length) { S.reasons[d] = Object.assign(S.reasons[d] || {}, pick); save(); renderAll(false); } close(); };
+      act.append(skip, ok); box.append(act);
+      if (jokersAvail() > 0) {
+        const j = el("button","btn gold","🃏 Използвай жокер за вчера"); j.style.width = "100%"; j.style.marginTop = "10px";
+        j.onclick = () => { useJoker(d); close(); }; box.append(j);
+      }
+    });
+  }
+
+  // ---------- таймер ----------
+  function startTimer(h){
+    const total = h.min*60; let endAt = Date.now() + total*1000, left = total, paused = false, iv = null;
+    openModal((box, close) => {
+      box.append(el("h2","center",h.name));
+      const big = el("div","timerbig"); box.append(big);
+      const bar = el("div","bar blue"); const fill = el("i"); bar.append(fill); box.append(bar);
+      const act = el("div","act");
+      const pb = el("button","btn ghost","Пауза"), cb = el("button","btn red","Откажи"), db = el("button","btn","Готово ✓");
+      act.append(pb, db, cb); box.append(act);
+      const fmt = s => pad(Math.floor(s/60)) + ":" + pad(s%60);
+      function tick(){
+        if (!paused) left = Math.max(0, Math.ceil((endAt - Date.now())/1000));
+        big.textContent = fmt(left); fill.style.width = ((total-left)/total*100) + "%";
+        if (left <= 0) finish();
+      }
+      function finish(){
+        clearInterval(iv); sound("timer");
+        const t = today();
+        if (!isOn(t,h.id) && t >= S.start && t <= endDate()) toggle(t,h.id);
+        toast("⏱️ Таймерът свърши. Отметнато ✓"); close();
+      }
+      pb.onclick = () => { if (paused) { endAt = Date.now() + left*1000; paused = false; pb.textContent = "Пауза"; } else { paused = true; pb.textContent = "Продължи"; } };
+      cb.onclick = () => { clearInterval(iv); close(); };
+      db.onclick = () => { left = 0; finish(); };
+      tick(); iv = setInterval(tick, 250);
+    });
+  }
+
+  // ---------- рендер ----------
+  let sel = clampDay(today());
+
+  function applySkin(){
+    const lv = levelOf(totalXP());
+    let s = SKINS.find(x => x.id === S.skin);
+    if (!s || s.lv > lv) s = SKINS[0];
+    if (s.id === "classic") document.body.removeAttribute("data-skin"); else document.body.setAttribute("data-skin", s.id);
+  }
+
+  function renderHeader(){
+    const e = endDate(), t = today();
+    let line = "Ден " + (dayList().indexOf(clampDay(t)) + 1) + " от " + S.days;
+    if (t < S.start) line = "Стартира на " + nice(S.start);
+    else if (t > e) line = "Челинджът приключи на " + nice(e);
+    $("periodLine").textContent = line + " · " + overallPct(elapsedDays()) + "% изпълнено";
+    const xp = totalXP(), li = levelOf(xp), L = LEVELS[li], N = LEVELS[li+1];
+    const c = $("lvlCard"); c.innerHTML = "";
+    const hero = el("div","hero",L.h); hero.setAttribute("aria-hidden","true");
+    const info = el("div","info");
+    info.append(el("div","ln",L.n), el("div","xp", xp + " XP" + (N ? " · още " + (N.xp - xp) + " до " + N.n : " · максимално ниво 👑")));
+    const bar = el("div","bar blue"); const fill = el("i"); fill.style.width = (N ? (xp - L.xp)/(N.xp - L.xp)*100 : 100) + "%"; bar.append(fill); info.append(bar);
+    const jk = el("div","jk","🃏 " + jokersAvail()); jk.title = "Жокери";
+    c.append(hero, info, jk);
+  }
+
+  function renderDanger(){
+    const box = $("danger"); box.innerHTML = "";
+    const t = today();
+    if (!S.danger || new Date().getHours() < 20 || t < S.start || t > endDate()) return;
+    const act = activeOn(t); if (!act.length || isPerfect(t) || S.jokerUsed[t]) return;
+    const left = act.length - doneCount(t), st = streaks().cur;
+    box.append(el("div","danger", st > 0 ? "⚠️ Серията ти от " + st + (st === 1 ? " ден" : " дни") + " е в опасност! Остават " + left + (left === 1 ? " навик" : " навика") + " до полунощ." : "⚠️ Остават " + left + (left === 1 ? " навик" : " навика") + " до перфектен ден. Не спирай сега."));
+  }
+
+  function renderMotd(){
+    const t = today(); let h = 0; for (const ch of t) h = (h*17 + ch.charCodeAt(0)) >>> 0;
+    $("motd").textContent = "„" + MOTD[h % MOTD.length] + "“";
+  }
+
+  function renderIdeaPrompt(){
+    const box = $("ideaPrompt"); box.innerHTML = "";
+    const t = today(), wk = weekOf(t);
+    if (parse(t).getDay() !== 0 || S.ideaWeek[wk] || !elapsedDays().length) return;
+    const d = el("div","idea"); d.append(el("span", null, "🎬 Седмицата приключи. Искаш ли идея за видео от нея?"));
+    const b = el("button","btn gold sm","💡 Дай идея"); b.onclick = () => { S.ideaWeek[weekOf(today())] = true; save(); renderIdeaPrompt(); videoIdea(); };
+    d.append(b); box.append(d);
+  }
+
+  function renderGoal(){
+    const card = $("goalCard"); card.innerHTML = "";
+    const pct = overallPct(elapsedDays()), tg = S.goal.target;
+    const left = dayList().filter(d => d > today()).length;
+    const bar = el("div","gbar"), fill = el("i"), mark = el("b");
+    fill.style.width = pct + "%"; mark.style.left = "calc(" + tg + "% - 1.5px)"; bar.append(fill, mark);
+    const gm = el("div","gm");
+    gm.append(el("span", null, "Сега: " + pct + "% · Цел: " + tg + "%"),
+      el("span", null, today() > endDate() ? (pct >= tg ? "Постигната 🏆" : "Не стигнах този път") : (pct >= tg ? "На курс ✓" : "Още " + (tg - pct) + "% · " + left + " дни")));
+    card.append(el("div","gl","Целта ми за тези " + S.days + " дни"), el("div","gt", S.goal.text || "Задай си цел в „Настройки“"), bar, gm);
+  }
+
+  function renderMission(){
+    const c = $("missionCard"); c.innerHTML = "";
+    const wk = weekOf(clampDay(today())), m = missionFor(wk);
+    const [cur, need] = m.p(weekDays(wk), wk);
+    c.append(el("h3", null, "🎯 Мисия на седмицата"), el("div", null, m.t()));
+    const bar = el("div","bar"); bar.style.margin = "8px 0 4px"; const f = el("i"); f.style.width = Math.min(100, cur/need*100) + "%"; bar.append(f); c.append(bar);
+    c.append(el("div","note", S.missionsDone[wk] ? "Изпълнена ✓ +" + S.missionsDone[wk] + " XP" : Math.min(cur,need) + "/" + need + " · награда +" + m.xp + " XP"));
+  }
+
+  function habitPct(h, days){ const a = days.filter(d => isActive(h,d)); return a.length ? a.filter(d => isOn(d,h.id)).length/a.length*100 : null; }
+
+  function renderFocus(){
+    const c = $("focusCard"); c.innerHTML = "";
+    const wk = weekOf(clampDay(today())), f = S.focus[wk];
+    c.append(el("h3", null, "⭐ Фокус навик"), el("div","note","Дава двойно XP цялата седмица."));
+    const s = el("select"); s.setAttribute("aria-label","Фокус навик за седмицата");
+    s.append(new Option("Избери навик…", ""));
+    const days = elapsedDays(); let weakest = null, wp = 101;
+    S.habits.forEach(h => { const p = habitPct(h, days); if (p !== null && p < wp) { wp = p; weakest = h; } s.append(new Option(h.name, h.id)); });
+    s.value = f && S.habits.some(h => h.id === f) ? f : "";
+    s.onchange = () => { if (s.value) S.focus[wk] = s.value; else delete S.focus[wk]; save(); renderAll(false); };
+    c.append(s);
+    if (!s.value && weakest && days.length > 1) c.append(el("div","note","Предложение: „" + weakest.name + "“ ти е най-слаб."));
+  }
+
+  function renderToday(){
+    const days = dayList(), idx = days.indexOf(sel), t = today();
+    $("dayTitle").textContent = "Ден " + (idx+1) + " / " + S.days;
+    $("dayDate").textContent = nice(sel) + (sel === t ? " · днес" : "");
+    $("prevDay").disabled = sel <= S.start;
+    $("nextDay").disabled = sel >= endDate() || sel >= t;
+    const locked = sel > t, fw = S.focus[weekOf(sel)];
+    const wrap = $("checklist"); wrap.innerHTML = "";
+    let num = 0;
+    PARTS.forEach(p => {
+      const hs = S.habits.filter(h => h.part === p.id && isActive(h, sel));
+      if (!hs.length) return;
+      wrap.append(el("div","part",p.t));
+      const ol = el("ol","check");
+      hs.forEach(h => {
+        num++;
+        const li = el("li"), b = el("button","hb"), on = isOn(sel,h.id);
+        b.setAttribute("aria-pressed", on ? "true" : "false"); b.disabled = locked;
+        b.append(el("span","n", on ? "✓" : String(num)), el("span","t", h.name + (fw === h.id ? " ⭐" : "")));
+        const rs = S.reasons[sel] && S.reasons[sel][h.id];
+        if (!on && rs) { const r = REASONS.find(x => x.id === rs); if (r) b.append(el("span","rs", r.t)); }
+        b.onclick = () => toggle(sel,h.id);
+        li.append(b);
+        if (h.min > 0 && !on && sel === t) { const tb = el("button","tb","▶ " + h.min + "м"); tb.setAttribute("aria-label","Пусни таймер " + h.min + " минути"); tb.onclick = () => startTimer(h); li.append(tb); }
+        ol.append(li);
+      });
+      wrap.append(ol);
+    });
+    const off = S.habits.filter(h => !isActive(h, sel));
+    if (off.length) wrap.append(el("p","rest","😌 Почивка днес от: " + off.map(h => h.name).join(", ")));
+    const dc = doneCount(sel), tot = activeOn(sel).length;
+    $("dayBar").style.width = (tot ? dc/tot*100 : 0) + "%";
+    const p = $("perfect"); p.innerHTML = "";
+    if (!S.habits.length) p.append(el("p","note","Добави навици от „Настройки“."));
+    else if (!tot) p.append(el("p","note","Днес няма навици. Пълна почивка. 😌"));
+    else if (dc === tot) p.append(el("div","perfect","Перфектен ден. 100% 🔥"));
+    else if (S.jokerUsed[sel]) p.append(el("div","perfect","🃏 Денят е спасен с жокер"));
+    else { const n = el("p","note", dc + " от " + tot + " · още " + (tot-dc)); n.style.textAlign = "center"; p.append(n); }
+    const a = $("dayActions"); a.innerHTML = "";
+    if (isPerfect(sel) && !S.chests[sel]) { const b = el("button","btn gold","🎁 Отвори сандъка"); b.onclick = () => openChest(sel); a.append(b); }
+    if (tot && !isPerfect(sel) && sel < t && !S.jokerUsed[sel] && jokersAvail() > 0) { const b = el("button","btn ghost","🃏 Използвай жокер за този ден"); b.onclick = () => useJoker(sel); a.append(b); }
+    const md = S.mood[sel] || {};
+    const mr = $("moodRow"); mr.innerHTML = "";
+    MOODS.forEach((m,i) => { const b = el("button", null, m); b.disabled = locked; b.setAttribute("aria-pressed", md.m === i+1 ? "true" : "false"); b.setAttribute("aria-label","Настроение " + (i+1) + " от 5");
+      b.onclick = () => { S.mood[sel] = Object.assign({}, S.mood[sel], {m:i+1}); save(); renderAll(false); }; mr.append(b); });
+    const er = $("energyRow"); er.innerHTML = "";
+    ENERGY.forEach((m,i) => { const b = el("button", null, m); b.disabled = locked; b.setAttribute("aria-pressed", md.e === i+1 ? "true" : "false");
+      b.onclick = () => { S.mood[sel] = Object.assign({}, S.mood[sel], {e:i+1}); save(); renderAll(false); }; er.append(b); });
+    const ni = $("noteIn");
+    if (document.activeElement !== ni) ni.value = S.notes[sel] || "";
+    ni.disabled = locked;
+  }
+
+  function renderGrid(){
+    const days = dayList(), t = today();
+    const tb = $("grid"); tb.innerHTML = "";
+    const thead = el("thead"), hr = el("tr");
+    hr.append(el("th","name","Навик"));
+    days.forEach((d,i) => { const th = el("th", d === t ? "today" : "", String(i+1)); th.title = nice(d); hr.append(th); });
+    thead.append(hr); tb.append(thead);
+    const tbody = el("tbody");
+    PARTS.forEach(p => S.habits.filter(h => h.part === p.id).forEach(h => {
+      const tr = el("tr"); tr.append(el("th","name",h.name));
+      days.forEach((d,i) => {
+        const td = el("td"), b = el("button"), on = isOn(d,h.id), act = isActive(h,d);
+        if (!act) { b.className = "off"; b.disabled = true; b.setAttribute("aria-label", h.name + ", ден " + (i+1) + ", почивен"); }
+        else {
+          if (on) { b.className = "on"; b.textContent = "✓"; }
+          b.disabled = d > t;
+          b.setAttribute("aria-label", h.name + ", ден " + (i+1) + (on ? ", изпълнено" : ""));
+          b.onclick = () => toggle(d,h.id);
+        }
+        td.append(b); tr.append(td);
+      });
+      tbody.append(tr);
+    }));
+    tb.append(tbody);
+    const tf = el("tfoot"), fr = el("tr"); fr.append(el("th","name","Ден %"));
+    days.forEach(d => fr.append(el("td", null, d > t || !activeOn(d).length ? "" : (S.jokerUsed[d] ? "🃏" : String(Math.round(dayPct(d)))))));
+    tf.append(fr); tb.append(tf);
+  }
+
+  function periodSummary(){
+    const days = elapsedDays();
+    return { start:S.start, end: today() < endDate() ? today() : endDate(), days:S.days, done:days.length, pct:overallPct(days), perfect:perfectCount(), best:streaks().best, goal:S.goal.text, target:S.goal.target };
+  }
+
+  function renderStats(){
+    const days = elapsedDays(), pct = overallPct(days);
+    $("bigPct").innerHTML = pct + "<small>%</small>";
+    const finished = today() > endDate();
+    $("statHead").textContent = finished ? "Краен резултат за " + S.days + " дни" : "Изпълнено досега";
+    $("statNote").textContent = !days.length ? "Челинджът още не е започнал." : pct >= 90 ? "Машина. Това е ниво състезател." : pct >= 75 ? "Много силно. Дисциплината се вижда." : pct >= 50 ? "Над половината. Стегни слабите навици." : "Всеки ден е нов шанс. Започни с 1–2 навика.";
+    const st = streaks(); let checks = 0; days.forEach(d => checks += doneCount(d));
+    const facts = $("facts"); facts.innerHTML = "";
+    [[days.length + "/" + S.days, "изминали дни"], [perfectCount(), "перфектни дни"], [st.cur, "текуща серия"], [st.best, "най-дълга серия"], [checks, "отметки общо"], [totalXP(), "XP общо"]]
+      .forEach(([b,s]) => { const f = el("div","fact"); f.append(el("b", null, String(b)), el("span", null, s)); facts.append(f); });
+
+    const box = $("habStats"); box.innerHTML = "";
+    S.habits.map(h => { const a = days.filter(d => isActive(h,d)), c = a.filter(d => isOn(d,h.id)).length; return {h, c, n:a.length, p: a.length ? Math.round(c/a.length*100) : 0}; })
+      .sort((a,b) => b.p - a.p).forEach(r => {
+        const div = el("div","hab"), bar = el("div","bar"), f = el("i"); f.style.width = r.p + "%"; bar.append(f);
+        div.append(el("span", null, r.h.name), el("span","p", r.p + "% · " + r.c + "/" + r.n), bar); box.append(div);
+      });
+
+    const sums = {}, cnt = {};
+    days.forEach(d => { if (!activeOn(d).length) return; const w = parse(d).getDay(); sums[w] = (sums[w]||0) + dayPct(d); cnt[w] = (cnt[w]||0) + 1; });
+    const avg = w => cnt[w] ? Math.round(sums[w]/cnt[w]) : null;
+    const have = DAY_ORDER.filter(w => avg(w) !== null);
+    let best = null, worst = null;
+    have.forEach(w => { if (best === null || avg(w) > avg(best)) best = w; if (worst === null || avg(w) < avg(worst)) worst = w; });
+    const wc = $("wkChart"); wc.innerHTML = "";
+    DAY_ORDER.forEach(w => {
+      const a = avg(w), col = el("div", have.length > 1 && w === best ? "best" : have.length > 1 && w === worst ? "worst" : "");
+      const bar = el("i"); bar.style.height = (a === null ? 0 : Math.max(3, a)) + "%";
+      col.append(el("span", null, a === null ? "–" : a + "%"), bar, el("span", null, WD[w])); wc.append(col);
+    });
+    $("wkNote").textContent = have.length < 3 ? "Трябват ти още няколко дни данни." : (avg(best) === avg(worst) ? "Всички дни са еднакви засега." : "Най-силен си в " + WDL[best] + " (" + avg(best) + "%), най-слаб в " + WDL[worst] + " (" + avg(worst) + "%).");
+
+    const rb = $("reasonStats"); rb.innerHTML = "";
+    const rc = {}, perHab = {};
+    Object.entries(S.reasons).forEach(([d,obj]) => { if (d < S.start || d > endDate()) return; Object.entries(obj).forEach(([hid,r]) => { rc[r] = (rc[r]||0)+1; perHab[hid] = perHab[hid] || {}; perHab[hid][r] = (perHab[hid][r]||0)+1; }); });
+    const totalR = Object.values(rc).reduce((a,b) => a+b, 0);
+    if (!totalR) rb.append(el("p","note","Още няма отговори. Когато пропуснеш навик, на следващия ден ще те питам защо."));
+    else {
+      REASONS.slice().sort((a,b) => (rc[b.id]||0) - (rc[a.id]||0)).forEach(r => {
+        const n = rc[r.id] || 0, div = el("div","hab"), bar = el("div","bar"), f = el("i"); f.style.width = (n/totalR*100) + "%"; bar.append(f);
+        div.append(el("span", null, r.t), el("span","p", n + " пъти"), bar); rb.append(div);
+      });
+      Object.entries(perHab).map(([hid,o]) => ({h:S.habits.find(x => x.id === hid), n:Object.values(o).reduce((a,b)=>a+b,0), r:Object.entries(o).sort((a,b)=>b[1]-a[1])[0][0]}))
+        .filter(x => x.h).sort((a,b) => b.n - a.n).slice(0,3)
+        .forEach(x => { const r = REASONS.find(y => y.id === x.r); rb.append(el("p","note","„" + x.h.name + "“ пропускаш най-често заради: " + (r ? r.t : "?"))); });
+    }
+
+    const mb = $("moodStats"); mb.innerHTML = "";
+    const strong = [], weak = [];
+    days.forEach(d => { const m = S.mood[d]; if (!m || !m.m) return; (dayPct(d) >= 80 ? strong : weak).push(m); });
+    const avgOf = a => a.length ? a.reduce((p,c)=>p+c.m,0)/a.length : null;
+    if (strong.length < 2 || weak.length < 2) mb.append(el("p","note","Отбелязвай настроението си още няколко дни, за да видим дали дисциплината те прави по-щастлив."));
+    else {
+      const sm = avgOf(strong), wm = avgOf(weak), f1 = el("div","facts");
+      [[sm.toFixed(1) + "/5 " + MOODS[Math.round(sm)-1], "настроение в силните дни (80%+)"], [wm.toFixed(1) + "/5 " + MOODS[Math.round(wm)-1], "в останалите дни"]]
+        .forEach(([b,s]) => { const f = el("div","fact"); f.append(el("b", null, b), el("span", null, s)); f1.append(f); });
+      mb.append(f1, el("p","note", sm > wm + .2 ? "Доказано с твоите данни: дисциплината носи щастие. 💛" : sm < wm - .2 ? "Интересно: в силните дни си по-уморен. Провери съня и почивката." : "Засега няма голяма разлика. Продължавай да отбелязваш."));
+    }
+
+    const ab = $("archive"); ab.innerHTML = "";
+    if (!S.archive.length) { ab.append(el("p","note","Когато започнеш нов челиндж, сегашният ще се запази тук, за да ги сравняваш.")); return; }
+    const last = S.archive[S.archive.length-1], diff = pct - last.pct;
+    if (days.length) ab.append(el("p","note", "Сега срещу миналия челиндж: " + (diff >= 0 ? "+" : "") + diff + "% " + (diff > 0 ? "📈" : diff < 0 ? "📉" : "")));
+    const list = el("div","arch");
+    S.archive.slice().reverse().forEach((a,i) => {
+      const n = S.archive.length - i, row = el("div");
+      const l = el("span"); l.append(el("b", null, "Челиндж " + n), el("br"), el("small", null, short(a.start) + " – " + short(a.end) + " · " + a.done + "/" + a.days + " дни" + (a.goal ? " · " + a.goal : "")));
+      const r = el("span"); r.append(el("b", null, a.pct + "%"), el("br"), el("small", null, "💯 " + a.perfect + " · 🔥 " + a.best + (a.pct >= a.target ? " · 🏆" : "")));
+      r.style.textAlign = "right"; row.append(l, r); list.append(row);
+    });
+    ab.append(list);
+  }
+
+  // ---------- рекорди ----------
+  function fmtVal(r, v){ if (r.type !== "time") return String(v); const h = Math.floor(v/3600), m = Math.floor(v%3600/60), s = v%60; return (h ? h + ":" + pad(m) : m) + ":" + pad(s); }
+  function parseVal(r, s){
+    s = String(s).trim().replace(",", ".");
+    if (r.type !== "time") { const n = parseFloat(s); return isFinite(n) && n >= 0 ? n : null; }
+    const p = s.split(":").map(x => parseInt(x,10));
+    if (p.some(x => !isFinite(x) || x < 0)) return null;
+    const v = p.length === 3 ? p[0]*3600+p[1]*60+p[2] : p.length === 2 ? p[0]*60+p[1] : p[0];
+    return v > 0 ? v : null;
+  }
+  function chartSVG(r){
+    const E = r.entries; if (E.length < 2) return null;
+    const W = 600, H = 190, L = 54, R = 14, T = 16, B = 30;
+    const vals = E.map(e => e.v); let mn = Math.min(...vals), mx = Math.max(...vals); if (mn === mx) { mn -= 1; mx += 1; }
+    const x = i => L + (W-L-R) * (i/(E.length-1)), y = v => T + (H-T-B) * (1 - (v-mn)/(mx-mn));
+    const bv = recBest(r), NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS,"svg"); svg.setAttribute("viewBox","0 0 "+W+" "+H); svg.setAttribute("role","img"); svg.setAttribute("aria-label","Графика на прогреса за " + r.name);
+    const mk = (t,a) => { const e = document.createElementNS(NS,t); Object.entries(a).forEach(([k,v]) => e.setAttribute(k,v)); svg.append(e); return e; };
+    [mn, mx].forEach(v => { mk("line",{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:"var(--line)","stroke-dasharray":"4 4"}); const t = mk("text",{x:L-8,y:y(v)+4,"text-anchor":"end","font-size":"12",fill:"var(--muted)"}); t.textContent = fmtVal(r, Math.round(v*10)/10); });
+    mk("polyline",{points:E.map((e,i) => x(i)+","+y(e.v)).join(" "),fill:"none",stroke:"var(--accent)","stroke-width":"3","stroke-linejoin":"round","stroke-linecap":"round"});
+    E.forEach((e,i) => mk("circle",{cx:x(i),cy:y(e.v),r:e.v === bv ? 7 : 4,fill:e.v === bv ? "var(--done)" : "var(--accent)",stroke:"var(--surface)","stroke-width":"2"}));
+    [[0,"start"],[E.length-1,"end"]].forEach(([i,a]) => { const t = mk("text",{x:x(i),y:H-8,"text-anchor":a,"font-size":"12",fill:"var(--muted)"}); t.textContent = short(E[i].d); });
+    return svg;
+  }
+  function renderRecords(){
+    const box = $("recList"); box.innerHTML = "";
+    if (!S.records.length) box.append(el("p","note","Още нямаш рекорди. Избери от предложенията отдолу или добави свой."));
+    S.records.forEach(r => {
+      const c = el("div","rec"), bv = recBest(r), last = r.entries[r.entries.length-1];
+      const rh = el("div","rh"); rh.append(el("b", null, r.name), el("span","best", bv === null ? "Няма резултат" : "🏅 " + fmtVal(r,bv)));
+      c.append(rh, el("div","note", (r.better === "less" ? "По-малко е по-добре" : "Повече е по-добре") + (last ? " · последно: " + fmtVal(r,last.v) + " (" + short(last.d) + ")" : "")));
+      const svg = chartSVG(r); if (svg) c.append(svg); else if (r.entries.length === 1) c.append(el("p","note","Добави още един резултат и ще се появи графика."));
+      const row = el("div","row"); row.style.marginTop = "10px";
+      const inp = el("input"); inp.type = "text"; inp.inputMode = r.type === "time" ? "text" : "decimal"; inp.placeholder = r.type === "time" ? "мм:сс, напр. 24:30" : "Резултат днес"; inp.setAttribute("aria-label","Нов резултат за " + r.name);
+      const add = el("button","btn sm","Запиши");
+      const go = () => {
+        const v = parseVal(r, inp.value); if (v === null) { toast("Въведи валиден резултат" + (r.type === "time" ? " (мм:сс)" : "")); return; }
+        const prev = recBest(r); r.entries.push({d:today(), v}); save();
+        if (prev !== null && better(r, v, prev)) { confetti(); sound("level"); toast("🏅 Нов личен рекорд! +25 XP"); }
+        else toast("Записано ✓");
+        renderAll(false);
+      };
+      add.onclick = go; inp.addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+      const del = el("button","ib del","✕"); del.setAttribute("aria-label","Изтрий рекорда " + r.name);
+      del.onclick = () => { if (confirm("Да изтрия ли „" + r.name + "“ с всички резултати?")) { S.records = S.records.filter(x => x !== r); save(); renderAll(false); } };
+      row.append(inp, add, del); c.append(row);
+      if (r.entries.length) {
+        const en = el("div","entries");
+        r.entries.slice(-12).forEach(e => { const s = el("span", null, short(e.d) + ": " + fmtVal(r,e.v)); const x = el("button", null, "✕"); x.setAttribute("aria-label","Изтрий резултата");
+          x.onclick = () => { r.entries.splice(r.entries.indexOf(e),1); save(); renderAll(false); }; s.append(x); en.append(s); });
+        c.append(en);
+      }
+      box.append(c);
+    });
+    const pr = $("recPresets"); pr.innerHTML = "";
+    REC_PRESETS.filter(p => !S.records.some(r => r.name === p.n)).forEach(p => { const b = el("button","chip","+ " + p.n); b.onclick = () => { S.records.push({id:uid(), name:p.n, type:p.type, better:p.better, entries:[]}); save(); renderAll(false); }; pr.append(b); });
+  }
+
+  // ---------- награди ----------
+  function computeAwards(){
+    const days = elapsedDays();
+    let checks = 0, perfect = 0, comeback = false, prev = null;
+    days.forEach(d => { if (!activeOn(d).length) return; checks += doneCount(d); const full = isPerfect(d); if (full) { perfect++; if (prev !== null && prev < 50) comeback = true; } prev = dayPct(d); });
+    const best = streaks().best;
+    let habBest = 0; S.habits.forEach(h => habBest = Math.max(habBest, habitStreakBest(h, days)));
+    const last7 = days.slice(-7), pct = overallPct(days), tg = S.goal.target;
+    const half = days.length >= Math.ceil(S.days/2), fin = today() > endDate();
+    const p = (v,n) => Math.min(v,n) + "/" + n;
+    return [
+      {id:"first", ic:"✅", n:"Първа крачка", d:"Направи първата си отметка", ok:checks>=1, pr:p(checks,1)},
+      {id:"perfect1", ic:"💯", n:"Перфектен ден", d:"Всички навици за един ден", ok:perfect>=1, pr:p(perfect,1)},
+      {id:"streak3", ic:"🔥", n:"3 подред", d:"3 перфектни дни подред", ok:best>=3, pr:p(best,3)},
+      {id:"streak7", ic:"⚡", n:"Седмица на огън", d:"7 перфектни дни подред", ok:best>=7, pr:p(best,7)},
+      {id:"streak14", ic:"🦾", n:"Две седмици желязо", d:"14 перфектни дни подред", ok:best>=14, pr:p(best,14)},
+      {id:"streak30", ic:"👑", n:"Месец без пропуск", d:"30 перфектни дни подред", ok:best>=30, pr:p(best,30)},
+      {id:"habit7", ic:"🎯", n:"Навик-машина", d:"Един навик 7 пъти подред", ok:habBest>=7, pr:p(habBest,7)},
+      {id:"habit21", ic:"🧠", n:"Вграден навик", d:"Един навик 21 пъти подред", ok:habBest>=21, pr:p(habBest,21)},
+      {id:"checks100", ic:"📈", n:"100 отметки", d:"Събери 100 отметки", ok:checks>=100, pr:p(checks,100)},
+      {id:"checks300", ic:"🏔️", n:"300 отметки", d:"Събери 300 отметки", ok:checks>=300, pr:p(checks,300)},
+      {id:"comeback", ic:"🔄", n:"Завръщане", d:"Перфектен ден след слаб ден (под 50%)", ok:comeback, pr:comeback?"1/1":"0/1"},
+      {id:"week90", ic:"🚀", n:"Звездна седмица", d:"Последните 7 дни над 90%", ok:last7.length===7 && overallPct(last7)>=90, pr:(last7.length===7 ? overallPct(last7) : 0) + "%/90%"},
+      {id:"half", ic:"⏳", n:"Половината път", d:"Стигни средата на челинджа над целта си", ok:half && pct>=tg, pr:(half ? "средата ✓" : "ден " + days.length + "/" + Math.ceil(S.days/2))},
+      {id:"goal", ic:"🏆", n:"Целта е постигната", d:"Завърши челинджа над целта си", ok:fin && pct>=tg, pr:fin ? pct + "%" : "в края на челинджа"}
+    ];
+  }
+  function checkAwards(){
+    const list = computeAwards(), fresh = list.filter(a => a.ok && !S.awards[a.id]);
+    if (fresh.length) {
+      fresh.forEach(a => S.awards[a.id] = today()); save();
+      toast(fresh.length === 1 ? "Нова награда: " + fresh[0].ic + " " + fresh[0].n : fresh.length + " нови награди! 🏆");
+    }
+    return list;
+  }
+  function checkLevel(){
+    const li = levelOf(totalXP());
+    if (typeof S.level !== "number") { S.level = li; save(); return; }
+    if (li > S.level) {
+      const L = LEVELS[li], sk = SKINS.find(x => x.lv === li); S.level = li; save();
+      sound("level"); confetti();
+      openModal((box, close) => {
+        box.append(el("div","bigemoji pop",L.h), el("h2","center","Ново ниво!"));
+        const p = el("p","center", "Вече си " + L.n + "."); p.style.fontWeight = "800"; p.style.fontSize = "1.2rem"; box.append(p);
+        const n = LEVELS[li+1]; box.append(el("p","note center", n ? "Следва: " + n.h + " " + n.n + " при " + n.xp + " XP" : "Това е върхът. Легенда. 👑"));
+        const act = el("div","act");
+        if (sk) {
+          box.append(el("p","center","🎨 Отключи нов стил: „" + sk.n + "“"));
+          const use = el("button","btn gold","Сложи го"); use.onclick = () => { S.skin = sk.id; save(); applySkin(); renderAll(false); close(); }; act.append(use);
+        }
+        const ok = el("button","btn","Продължавам"); ok.onclick = close; act.append(ok); box.append(act);
+      });
+    } else if (li < S.level) { S.level = li; save(); }
+  }
+  function renderAwards(list){
+    const xp = totalXP(), li = levelOf(xp), lad = $("ladder"); lad.innerHTML = "";
+    LEVELS.forEach((L,i) => { const r = el("div", i === li ? "cur" : i > li ? "lock" : ""); r.append(el("span", null, L.h), el("b", null, L.n), el("small", null, L.xp + " XP")); lad.append(r); });
+    const sk = $("skins"); sk.innerHTML = "";
+    const curSkin = (SKINS.find(x => x.id === S.skin && x.lv <= li) || SKINS[0]).id;
+    SKINS.forEach(s => {
+      const b = el("button","skin"), sw = el("div","sw");
+      s.sw.forEach(c => { const i = el("i"); i.style.background = c; sw.append(i); });
+      b.append(sw, document.createTextNode(s.n), el("small", null, s.lv <= li ? (s.id === curSkin ? "Активен" : "Отключен") : "🔒 " + LEVELS[s.lv].n));
+      b.disabled = s.lv > li; b.setAttribute("aria-pressed", s.id === curSkin ? "true" : "false");
+      b.onclick = () => { S.skin = s.id; save(); applySkin(); renderAll(false); };
+      sk.append(b);
+    });
+    const got = list.filter(a => S.awards[a.id]).length;
+    $("awardsHead").textContent = "🏆 " + got + " от " + list.length + " награди";
+    const g = $("awardsGrid"); g.innerHTML = "";
+    list.forEach(a => { const has = !!S.awards[a.id], c = el("div","award " + (has ? "got" : "locked"));
+      c.append(el("div","ic",a.ic), el("div","an",a.n), el("div","ad",a.d), el("div","ap", has ? "Отключена " + nice(S.awards[a.id]) : a.pr)); g.append(c); });
+    const sg = $("secretGrid"); sg.innerHTML = "";
+    $("secretHead").textContent = "🔮 Тайни значки " + Object.keys(S.secrets).length + "/" + SECRETS.length;
+    SECRETS.forEach(s => { const has = !!S.secrets[s.id], c = el("div","award " + (has ? "got" : "locked"));
+      c.append(el("div","ic", has ? s.ic : "❓"), el("div","an", has ? s.n : "???"), el("div","ap", has ? "Намерена " + nice(S.secrets[s.id]) : "Скрита")); sg.append(c); });
+  }
+
+  function renderSettings(){
+    $("startIn").value = S.start; $("daysIn").value = String(S.days);
+    $("goalIn").value = S.goal.text; $("targetIn").value = String(S.goal.target);
+    $("soundIn").checked = S.sound; $("fxIn").checked = S.fx; $("dangerIn").checked = S.danger;
+    const box = $("habEdit"); box.innerHTML = "";
+    S.habits.forEach((h,i) => {
+      const wrap = el("div","hrow"), row = el("div","row");
+      const inp = el("input"); inp.type = "text"; inp.value = h.name; inp.maxLength = 60; inp.setAttribute("aria-label","Име на навик " + (i+1));
+      inp.onchange = () => { const v = inp.value.trim(); if (v) { h.name = v; save(); renderAll(false); } else inp.value = h.name; };
+      const mn = el("input"); mn.type = "number"; mn.min = "0"; mn.max = "180"; mn.placeholder = "мин"; mn.value = h.min ? String(h.min) : ""; mn.setAttribute("aria-label","Минути за таймер");
+      mn.onchange = () => { h.min = Math.max(0, Math.min(180, parseInt(mn.value,10) || 0)); save(); renderAll(false); };
+      const btn = (t,l,f) => { const b = el("button","ib",t); b.setAttribute("aria-label",l); b.onclick = f; return b; };
+      const up = btn("↑","Нагоре", () => move(i,-1)); up.disabled = i === 0;
+      const dn = btn("↓","Надолу", () => move(i,1)); dn.disabled = i === S.habits.length-1;
+      const del = btn("✕","Изтрий", () => { if (confirm("Да изтрия ли „" + h.name + "“?")) { S.habits.splice(i,1); save(); renderAll(); } }); del.classList.add("del");
+      row.append(inp, mn, up, dn, del);
+      const row2 = el("div","row");
+      const ps = el("select"); ps.setAttribute("aria-label","Част от деня");
+      PARTS.forEach(p => ps.append(new Option(p.t, p.id))); ps.value = h.part;
+      ps.onchange = () => { h.part = ps.value; save(); renderAll(false); };
+      const dc = el("div","daychips");
+      DAY_ORDER.forEach(w => { const b = el("button", null, WD[w]); b.setAttribute("aria-pressed", h.days.includes(w) ? "true" : "false"); b.setAttribute("aria-label", WDL[w]);
+        b.onclick = () => { if (h.days.includes(w)) { if (h.days.length === 1) { toast("Навикът трябва да важи поне един ден"); return; } h.days = h.days.filter(x => x !== w); } else h.days.push(w); save(); renderAll(); };
+        dc.append(b); });
+      row2.append(ps, dc);
+      wrap.append(row, row2); box.append(wrap);
+    });
+    function move(i,d){ const a = S.habits; [a[i],a[i+d]] = [a[i+d],a[i]]; save(); renderAll(); }
+  }
+
+  function renderAll(withSettings=true){
+    sel = clampDay(sel);
+    checkMissions();
+    const awardList = checkAwards();
+    checkLevel(); applySkin();
+    renderHeader(); renderDanger(); renderMotd(); renderIdeaPrompt(); renderGoal(); renderMission(); renderFocus(); renderToday(); renderGrid(); renderStats(); renderRecords(); renderAwards(awardList);
+    if (withSettings) renderSettings();
+  }
+
+  // ---------- идеи за видео (без интернет) ----------
+  let lastIdea = -1;
+  function ideaPool(){
+    const all = elapsedDays(), days = all.slice(-7), pct = overallPct(all), st = streaks(), L = LEVELS[levelOf(totalXP())];
+    const hp = S.habits.map(h => ({h, p: habitPct(h, days)})).filter(x => x.p !== null).sort((a,b) => a.p - b.p);
+    const weak = hp[0], strong = hp[hp.length-1];
+    const rc = {}; Object.values(S.reasons).forEach(o => Object.values(o).forEach(r => rc[r] = (rc[r]||0)+1));
+    const topR = Object.entries(rc).sort((a,b) => b[1]-a[1])[0];
+    const rText = topR ? (REASONS.find(r => r.id === topR[0]) || {}).t : null;
+    const pool = [];
+    if (weak && weak.p < 100) pool.push({
+      title: "Навикът, който ме побеждава всяка седмица",
+      hook: "Имам " + S.habits.length + " навика. Един от тях ме бие постоянно: „" + weak.h.name + "“.",
+      pts: ["Кой е навикът и защо изобщо го имам", "Колко пъти съм го изпълнил: само " + Math.round(weak.p) + "% тази седмица", rText ? "Честно защо го пропускам (най-често: " + rText + ")" : "Честно защо го пропускам", "Какво ще пробвам тази седмица, за да го оправя", "Въпрос: „Кой навик побеждава вас?“"],
+      shoot: "Говориш в камерата от стола, после 5 сек кадър как отмяташ навика в тракера."
+    });
+    if (days.length) pool.push({
+      title: "Следя всеки навик в деня си. Ето резултата",
+      hook: "На 15 съм и записвам всичко, което правя. За " + all.length + (all.length === 1 ? " ден" : " дни") + " съм изпълнил " + pct + "%.",
+      pts: ["Покажи тракера и картата за споделяне на екран", strong ? "Най-силният ти навик: „" + strong.h.name + "“" : "Най-силният ти навик", weak ? "Най-слабият: „" + weak.h.name + "“" : "Най-слабият ти навик", "Целта ти: " + (S.goal.text || "какво искаш да постигнеш") + " (" + S.goal.target + "%)", "Финал: „Ще стигна ли целта? Следвай, за да видиш.“"],
+      shoot: "Един дубъл: държиш телефона с тракера до камерата и разказваш."
+    });
+    if (st.cur >= 2) pool.push({
+      title: st.cur + " дни без нито един пропуск",
+      hook: "Не съм пропуснал нито един навик " + st.cur + " дни подред. Ето как.",
+      pts: ["Кое беше най-трудното в серията", "Един трик, който ти помага (напр. таймер, бележка, режим)", "Какво ще стане, ако я прекъснеш (жокерите 🃏)", "Финал: „Колко дни ще издържа? Пишете прогноза.“"],
+      shoot: "Снимаш вечер, докато отмяташ последния навик за деня, и говориш."
+    });
+    S.records.forEach(r => { if (r.entries.length >= 2) { const f = r.entries[0].v, b = recBest(r); if (b !== f) pool.push({
+      title: r.name + ": от " + fmtVal(r,f) + " до " + fmtVal(r,b),
+      hook: "Преди: " + fmtVal(r,f) + ". Сега: " + fmtVal(r,b) + ". Ето какво промених.",
+      pts: ["Покажи графиката от „Рекорди“", "Какво тренира, за да се подобриш", "Направи го на живо пред камерата", "Финал: „Следващата цел е…“"],
+      shoot: "Статив отстрани, един дубъл на опита, после 10 сек говорене задъхан."
+    }); } });
+    const morning = S.habits.filter(h => h.part === "morning").map(h => h.name);
+    if (morning.length >= 2) pool.push({
+      title: "Сутрешната ми рутина на 15",
+      hook: "Това правя всяка сутрин преди училище. Без изключения.",
+      pts: morning.slice(0,4).map(n => "– " + n).concat(["Финал: „Каква е вашата сутрешна рутина?“"]),
+      shoot: "Снимай всеки навик по 3–4 сек сутринта, после в CapCut ги слагаш един след друг с надписи."
+    });
+    pool.push({
+      title: "Превърнах живота си в игра",
+      hook: "Всяка отметка ми дава XP. В момента съм ниво „" + L.n + "“ " + L.h + ".",
+      pts: ["Покажи героя и нивата в тракера", "Как печелиш XP, сандъци и жокери", "Покажи наградите, които си отключил (" + Object.keys(S.awards).length + ")", "Финал: „Кога ще стигна Легенда? 🐉“"],
+      shoot: "Запис на екрана на телефона + гласът ти отгоре. Нула рязане."
+    });
+    pool.push({
+      title: "Дисциплина или мотивация?",
+      hook: "Мотивацията ме кара да започна. Дисциплината ме кара да продължа.",
+      pts: ["Ден, в който не ти се искаше, но го направи", "Какво правиш, когато мотивацията изчезне", "Защо според теб дисциплината носи щастие", "Финал: „Вие кое сте: мотивация или дисциплина?“"],
+      shoot: "Говориш в камерата след тренировка, задъхан. Автентично е по-силно от перфектно."
+    });
+    pool.push({
+      title: "Отключих тайна награда",
+      hook: "Има 4 тайни значки в тракера ми. Днес може да намеря една.",
+      pts: ["Покажи перфектния ден", "Отвори сандъка на живо", "Реакция", "Финал: „Колко тайни значки ще събера?“"],
+      shoot: "Запис на екрана, докато отваряш сандъка, плюс камерата отпред за реакцията."
+    });
+    return pool;
+  }
+  function videoIdea(){
+    const pool = ideaPool();
+    let i = Math.floor(Math.random()*pool.length);
+    if (pool.length > 1 && i === lastIdea) i = (i+1) % pool.length;
+    lastIdea = i; const it = pool[i];
+    openModal((box, close) => {
+      box.append(el("h2", null, "💡 Идея за видео"));
+      const t = el("p", null, "🎬 " + it.title); t.style.fontWeight = "800"; t.style.fontSize = "1.1rem";
+      const h = el("p", null, "⚡ Hook (първите 3 сек): " + it.hook);
+      box.append(t, h, el("strong", null, "📌 Опорни точки"));
+      const ul = el("ul"); ul.style.margin = "6px 0 10px"; ul.style.paddingLeft = "20px";
+      it.pts.forEach(p => ul.append(el("li", null, p.replace(/^– /, "")))); box.append(ul);
+      box.append(el("p","note","🎥 " + it.shoot));
+      const act = el("div","act"), again = el("button","btn gold","Друга идея"), cl = el("button","btn ghost","Затвори");
+      again.onclick = () => { close(); videoIdea(); }; cl.onclick = close; act.append(again, cl); box.append(act);
+    });
+  }
+  $("ideaBtn").onclick = videoIdea;
+
+  // ---------- резервно копие ----------
+  function downloadBlob(blob, name){
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.append(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+  $("backupBtn").onclick = () => { downloadBlob(new Blob([JSON.stringify(S)], {type:"application/json"}), "navici-kopie-" + today() + ".json"); toast("Копието е изтеглено 💾"); };
+  $("restoreIn").onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try { const d = JSON.parse(r.result); if (!d || !Array.isArray(d.habits)) throw 0;
+        if (!confirm("Да заредя ли копието? Сегашните данни ще бъдат заменени.")) return;
+        S = norm(d); save(); sel = clampDay(today()); renderAll(); toast("Копието е заредено ✓");
+      } catch(err) { toast("Този файл не е копие от тракера."); }
+      e.target.value = "";
+    };
+    r.readAsText(f);
+  };
+
+  // ---------- карта за споделяне ----------
+  async function makeCard(){
+    try { await Promise.all([document.fonts.load("800 100px Unbounded"), document.fonts.load("700 40px Manrope")]); } catch(e){}
+    const c = document.createElement("canvas"); c.width = 1080; c.height = 1920; const x = c.getContext("2d");
+    const cs = getComputedStyle(document.body), acc = cs.getPropertyValue("--accent").trim() || "#2F5BFF", gold = cs.getPropertyValue("--done").trim() || "#FFC93C";
+    const g = x.createLinearGradient(0,0,0,1920); g.addColorStop(0,"#1B2334"); g.addColorStop(1,"#0E1422"); x.fillStyle = g; x.fillRect(0,0,1080,1920);
+    x.fillStyle = acc; x.fillRect(0,0,1080,14);
+    x.textAlign = "center";
+    const idx = dayList().indexOf(clampDay(today())) + 1;
+    x.fillStyle = "#97A3B6"; x.font = "700 46px Unbounded, sans-serif"; x.fillText("ДЕН " + idx + " / " + S.days, 540, 180);
+    const L = LEVELS[levelOf(totalXP())];
+    x.font = "260px serif"; x.fillText(L.h, 540, 520);
+    x.fillStyle = "#EEF2F8"; x.font = "800 80px Unbounded, sans-serif"; x.fillText(L.n, 540, 660);
+    x.fillStyle = "#97A3B6"; x.font = "700 40px Manrope, sans-serif"; x.fillText(totalXP() + " XP", 540, 725);
+    x.fillStyle = gold; x.font = "800 300px Unbounded, sans-serif"; x.fillText(overallPct(elapsedDays()) + "%", 540, 1080);
+    x.fillStyle = "#EEF2F8"; x.font = "700 46px Manrope, sans-serif"; x.fillText("изпълнени навици", 540, 1160);
+    const st = streaks();
+    [["🔥", st.cur, "серия"], ["💯", perfectCount(), "перфектни"], ["🏆", Object.keys(S.awards).length, "награди"]].forEach((s,i) => {
+      const cx = 220 + i*320;
+      x.fillStyle = "#242E42"; rr(x, cx-140, 1240, 280, 230, 36); x.fill();
+      x.font = "70px serif"; x.fillStyle = "#fff"; x.fillText(s[0], cx, 1330);
+      x.font = "800 64px Unbounded, sans-serif"; x.fillText(String(s[1]), cx, 1410);
+      x.font = "700 30px Manrope, sans-serif"; x.fillStyle = "#97A3B6"; x.fillText(s[2], cx, 1450);
+    });
+    if (S.goal.text) {
+      x.fillStyle = "#97A3B6"; x.font = "700 34px Manrope, sans-serif"; x.fillText("ЦЕЛ: " + S.goal.target + "%", 540, 1560);
+      x.fillStyle = "#EEF2F8"; x.font = "700 46px Manrope, sans-serif"; wrapText(x, S.goal.text, 540, 1625, 900, 58);
+    }
+    x.fillStyle = acc; x.font = "800 40px Unbounded, sans-serif"; x.fillText("Дисциплината носи щастие", 540, 1820);
+    return c;
+    function rr(c,x0,y0,w,h,r){ c.beginPath(); c.moveTo(x0+r,y0); c.arcTo(x0+w,y0,x0+w,y0+h,r); c.arcTo(x0+w,y0+h,x0,y0+h,r); c.arcTo(x0,y0+h,x0,y0,r); c.arcTo(x0,y0,x0+w,y0,r); c.closePath(); }
+    function wrapText(c,text,cx,y,maxW,lh){ const words = text.split(" "); let line = "", lines = []; words.forEach(w => { const t = line ? line + " " + w : w; if (c.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; }); lines.push(line); lines.slice(0,2).forEach((l,i) => c.fillText(l, cx, y + i*lh)); }
+  }
+  $("shareBtn").onclick = async () => {
+    let c; try { c = await makeCard(); } catch(e) { toast("Не успях да направя картата."); return; }
+    const url = c.toDataURL("image/png");
+    openModal((box, close) => {
+      box.append(el("h2", null, "Карта за споделяне"));
+      const img = el("img","shareimg"); img.src = url; img.alt = "Карта с резултата ти"; box.append(img);
+      const act = el("div","act");
+      const sb = el("button","btn gold","Запази картинката");
+      sb.onclick = () => c.toBlob(blob => downloadBlob(blob, "navici-den-" + (dayList().indexOf(clampDay(today()))+1) + ".png"), "image/png");
+      act.append(sb);
+      box.append(el("p","note","На iPhone: задръж пръст върху картинката и избери „Запази в Снимки“."));
+      const cl = el("button","btn ghost","Затвори"); cl.onclick = close; act.append(cl); box.append(act);
+    });
+  };
+
+  // ---------- събития ----------
+  function goTab(k){
+    document.querySelectorAll("nav.tabs button").forEach(x => x.setAttribute("aria-selected", x.dataset.tab === k ? "true" : "false"));
+    ["today","grid","stats","records","awards","settings"].forEach(t => $("tab-"+t).hidden = t !== k);
+  }
+  document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => goTab(b.dataset.tab)));
+  $("prevDay").onclick = () => { sel = clampDay(addDays(sel,-1)); renderAll(false); };
+  $("nextDay").onclick = () => { sel = clampDay(addDays(sel,1)); renderAll(false); };
+  $("noteIn").addEventListener("input", e => { const v = e.target.value; if (v.trim()) S.notes[sel] = v; else delete S.notes[sel]; save(); });
+  $("startIn").onchange = e => { if (e.target.value) { S.start = e.target.value; save(); renderAll(); } };
+  $("daysIn").onchange = e => { S.days = Number(e.target.value); save(); renderAll(); };
+  $("goalIn").onchange = e => { S.goal.text = e.target.value.trim(); save(); renderAll(false); };
+  $("targetIn").onchange = e => { S.goal.target = Number(e.target.value); save(); renderAll(false); };
+  $("soundIn").onchange = e => { S.sound = e.target.checked; save(); };
+  $("fxIn").onchange = e => { S.fx = e.target.checked; save(); };
+  $("dangerIn").onchange = e => { S.danger = e.target.checked; save(); renderDanger(); };
+  function addHabit(){ const i = $("newHab"); const v = i.value.trim(); if (!v) return; const m = v.match(/(\d+)\s*мин/i); S.habits.push({id:uid(), name:v, min: m ? Math.min(180, +m[1]) : 0, part: guessPart(v), days: ALL_DAYS.slice()}); i.value = ""; save(); renderAll(); }
+  $("addHab").onclick = addHabit;
+  $("newHab").addEventListener("keydown", e => { if (e.key === "Enter") addHabit(); });
+  $("recAdd").onclick = () => {
+    const n = $("recName").value.trim(); if (!n) { $("recName").focus(); return; }
+    S.records.push({id:uid(), name:n.slice(0,40), type:$("recType").value, better:$("recBetter").value, entries:[]});
+    $("recName").value = ""; save(); renderAll(false);
+  };
+  $("recType").onchange = e => { $("recBetter").value = e.target.value === "time" ? "less" : "more"; };
+  $("resetBtn").onclick = () => {
+    if (!confirm("Текущият челиндж отива в архива и започва нов от днес. XP, нивото, жокерите, рекордите и наградите остават. Сигурен ли си?")) return;
+    if (elapsedDays().length) S.archive.push(periodSummary());
+    S.xpBank = S.xpBank + periodXP(); S.jokerCarry = Math.max(0, jokersAvail());
+    ["checks","chests","jokerUsed","missionsDone","focus","reasons","mood","asked","notes","ideaWeek"].forEach(k => S[k] = {});
+    S.start = today(); sel = today(); save(); renderAll();
+    toast("Нов челиндж започна! 🚀");
+  };
+
+  let lastDay = today();
+  setInterval(() => { if (today() !== lastDay) { lastDay = today(); sel = today(); renderAll(false); askMissed(); } else renderDanger(); }, 60000);
+
+  renderAll();
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+  askMissed();
+})();
+</script>
+</body>
+</html>
